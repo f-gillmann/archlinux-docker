@@ -1,7 +1,7 @@
 FROM archlinux:latest
 
 # Install dependencies
-RUN pacman -Syyu --noconfirm sudo zsh
+RUN pacman -Syyu --noconfirm sudo zsh git fastfetch
 
 # Add default user and add group
 RUN useradd -m arch
@@ -18,4 +18,4 @@ WORKDIR /home/arch
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Run zsh
-CMD zsh
+CMD fastfetch && zsh
