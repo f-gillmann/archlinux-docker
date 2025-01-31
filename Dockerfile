@@ -1,21 +1,35 @@
 FROM archlinux:latest
 
-# Install dependencies
-RUN pacman -Syyu --noconfirm sudo zsh git fastfetch
+# Initialize keyring and update package database
+RUN pacman-key --init
+RUN pacman -Syyu --noconfirm
 
-# Add default user and add group
-RUN useradd -m arch
-RUN usermod -aG wheel arch
+# Install packages
+RUN pacman -S --noconfirm \
+    zsh sudo fastfetch git vim \
+    bat zip unzip tar wget \
+    curl fd htop ncdu mlocate \
+    tree man-db tldr jq yq \
+    diffutils openssl ranger
 
-# Edit sudoers file
-RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/wheel > /dev/null
+# Add default user and edit sudoers file
+RUN useradd -m arch \
+    && usermod -aG wheel arch \
+    && echo '%wheel ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/wheel > /dev/null
 
 # Set default user
 USER arch
 WORKDIR /home/arch
 
-# Install o
+# Install omz and enable plugins
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && \
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+    sed -i 's/^plugins=(*)/plugins=(git ssh zsh-syntax-highlighting zsh-autosuggestions)/g' ~/.zshrc
 
-# Run zsh
+# Install omz theme
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" && \
+    sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
+    
+# Run fastfetch and start zsh
 CMD fastfetch && zsh
