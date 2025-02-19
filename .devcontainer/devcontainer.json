@@ -4,12 +4,21 @@
         "dockerfile": "../Dockerfile",
         "context": ".."
     },
+    "remoteUser": "arch",
     "customizations": {
         "vscode": {
             "settings": {
                 "terminal.integrated.shell.linux": "/bin/zsh",
-                "terminal.integrated.defaultProfile.linux": "zsh"
-            }
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "workbench.colorTheme": "OneDarkPro",
+                "workbench.iconTheme": "material-icon-theme",
+                "editor.semanticHighlighting.enabled": true
+            },
+            "extensions": [
+                "zhuangtongfa.Material-theme",
+                "PKief.material-icon-theme",
+                "ms-vscode.cpptools-extension-pack"
+            ]
         }
     }
 }
