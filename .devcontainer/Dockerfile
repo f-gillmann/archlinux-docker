@@ -13,13 +13,13 @@ RUN pacman -S --noconfirm \
     diffutils openssl ranger
 
 # Add default user and edit sudoers file
-RUN useradd -m arch \
-    && usermod -aG wheel arch \
+RUN useradd -m vscode \
+    && usermod -aG wheel vscode \
     && echo '%wheel ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/wheel > /dev/null
 
 # Switch to user to install omz
-USER arch
-WORKDIR /home/arch
+USER vscode
+WORKDIR /home/arvscodech
 
 # Install omz and enable plugins
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \

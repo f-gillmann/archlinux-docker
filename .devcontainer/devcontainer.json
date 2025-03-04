@@ -1,10 +1,9 @@
 {
     "name": "Arch Linux Devcontainer",
     "build": {
-        "dockerfile": "../Dockerfile",
+        "dockerfile": "Dockerfile",
         "context": ".."
     },
-    "remoteUser": "arch",
     "customizations": {
         "vscode": {
             "settings": {
